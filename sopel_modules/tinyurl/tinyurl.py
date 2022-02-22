@@ -18,6 +18,7 @@ class TinyurlSection(StaticSection):
 
 
 def configure(config):
+		config.define_section('tinyurl', TinyurlSection, validate=False)
 		config.tinyurl.configure_setting('api_token', 'tinyurl api token')
 		config.tinyurl.configure_setting('api_url', 'tinyurl api url')
 		config.tinyurl.configure_setting('max_url_length', 'max url length before being converted to tinyurl')
@@ -53,10 +54,11 @@ def create_tinyurl(api_endpoint, token, url):
 def shorten_url(bot, trigger)
 	shamee = trigger.nick  # Maybe use later.
 
+	url_max = int(bot.config.tinyurl.max_url_length)
 	re_res = re.match(URL_RE, trigger)
 
 	if re_res:
-		if len(re_res.groups()[0]) >= bot.config.tinyurl.max_url_length:
+		if len(re_res.groups()[0]) >= url_max:
 			tiny_result = create_tinyurl(
 				bot.config.tinyurl.api_url,
 				bot.config.tinyurl.api_token,
